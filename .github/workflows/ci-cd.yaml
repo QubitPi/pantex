@@ -47,19 +47,19 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actionshub/markdownlint@main
 
-#  linkChecker:
-#    name: Link Check
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - name: Link Checker
-#        uses: lycheeverse/lychee-action@v1.9.0
-#        with:
-#          fail: true
+  linkChecker:
+    name: Link Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.9.0
+        with:
+          fail: true
 
   integration-tests:
     name: Integration Tests
-    needs: [yaml-lint, markdown-lint]
+    needs: [yaml-lint, markdown-lint, linkChecker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -82,7 +82,7 @@ jobs:
 
   docker:
     name: Test Docker Image & Container and Publish Image to Docker Hub
-    needs: [yaml-lint, markdown-lint]
+    needs: [yaml-lint, markdown-lint, linkChecker]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -137,6 +137,6 @@ jobs:
           fetch-depth: 0
           lfs: true
       - name: Push to hub
-        run: git push https://QubitPi:$HF_TOKEN@huggingface.co/spaces/QubitPi/pantex master:main -f
+        run: git push https://QubitPi:$HF_TOKEN@huggingface.co/spaces/QubitPi/pantex pantex:main -f
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
