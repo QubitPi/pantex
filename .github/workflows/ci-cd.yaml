@@ -82,7 +82,7 @@ jobs:
 
   docker:
     name: Test Docker Image & Container and Publish Image to Docker Hub
-    needs: [yaml-lint, markdown-lint, linkChecker]
+    needs: [yaml-lint, markdown-lint]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
